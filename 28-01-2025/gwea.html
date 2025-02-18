@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <div>
+            <h2>Enter a city name</h2>
+            <input type="text" id="city" placeholder="Enter a city name">
+            <button onclick="fetchWeather()">Submit</button>
+        </div>
+        <canvas id="myChart"></canvas>
+      </div>
+      
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      
+      <script>
+
+    const ctx = document.getElementById('myChart');
+    const API_KEY="25b5d51f0221767ca7aad908df540fdd";
+        let myChart;
+        function fetchWeather(){
+            if (myChart) {
+                myChart.destroy();
+            }
+            const city=document.getElementById('city').value;
+            // console.log(city);
+          
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}`)
+        .then(response=>response.json())
+        .then(data=>{
+            const temperatures = data.list.slice(0, 5).map(item => item.main.temp- 273.15)
+            const labels = data.list.slice(0, 5).map(item => new Date(item.dt * 1000).toDateString());
+            console.log(data);
+            new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Temperature forecast of last four days',
+              data: temperatures,
+              borderColor: 'rgb(75, 192, 192)',
+              tension: 0.1
+            }]
+          }
+          
+        });
+        })
+        .catch(err=>{
+            console.log("Enter valid city name")
+        })
+        }
+        
+      </script>
+       
+</body>
+</html>

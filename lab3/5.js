@@ -1,3 +1,15 @@
+
+
+
+
+
+
+
+
+
+
+
+
 function fetchData(url) {
     let p = new Promise((resolve, reject) => {
         if (url.includes("error")) {
